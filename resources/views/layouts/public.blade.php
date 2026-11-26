@@ -126,7 +126,7 @@
     </div>
     <div class="container footer-bottom reference-footer-credit">
         <p>InstantAyurved. All rights reserved.</p>
-        <p>Developed by <a href="https://hiteshahire.in/">Hitesh Ahire</a></p>
+        <p>Developed by a <a href="https://hiteshahire.in/">Hitesh Ahire</a></p>
     </div>
 </footer>
 <div class="contact-shortcuts">
