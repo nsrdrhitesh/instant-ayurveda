@@ -1,0 +1,75 @@
+name: Validate and stage Laravel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: instantayurved-release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, dom, fileinfo, curl, gd, intl, pdo_mysql, pdo_sqlite, sqlite3, xml, xmlwriter, zip
+          tools: composer:v2
+          coverage: none
+      - name: Verify locked dependencies and test
+        run: |
+          composer validate --no-check-publish
+          composer check-platform-reqs --lock
+          composer install --prefer-dist --no-interaction --no-progress
+          cp .env.example .env
+          php artisan key:generate --force
+          php artisan test
+      - name: Package production runtime
+        run: |
+          composer install --no-dev --prefer-dist --classmap-authoritative --no-interaction --no-progress
+          composer check-platform-reqs --no-dev
+          printf '{"commit":"%s"}\n' "$GITHUB_SHA" > public/release.json
+          tar -czf "$RUNNER_TEMP/instantayurved.tar.gz" \
+            app bootstrap/app.php bootstrap/providers.php bootstrap/cache/.gitignore \
+            config database/content database/migrations database/seeders \
+            public resources routes vendor artisan composer.json composer.lock
+          cd "$RUNNER_TEMP"
+          sha256sum instantayurved.tar.gz > instantayurved.tar.gz.sha256
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: instantayurved-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/instantayurved.tar.gz
+            ${{ runner.temp }}/instantayurved.tar.gz.sha256
+      - name: Transfer verified release to Hostinger
+        if: github.ref == 'refs/heads/main' && vars.HOSTINGER_STAGE_ENABLED == 'true'
+        env:
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_PORT: ${{ secrets.HOSTINGER_PORT }}
+          HOSTINGER_USERNAME: ${{ secrets.HOSTINGER_USERNAME }}
+          HOSTINGER_SSH_KEY: ${{ secrets.HOSTINGER_SSH_KEY }}
+          HOSTINGER_KNOWN_HOSTS: ${{ secrets.HOSTINGER_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          umask 077
+          [[ "$HOSTINGER_HOST" =~ ^[0-9.]+$ && "$HOSTINGER_PORT" =~ ^[0-9]+$ && "$HOSTINGER_USERNAME" =~ ^u[0-9]+$ ]]
+          : "${HOSTINGER_SSH_KEY:?Missing SSH key}" "${HOSTINGER_KNOWN_HOSTS:?Missing pinned host key}"
+          ssh_dir=$(mktemp -d)
+          trap 'rm -rf -- "$ssh_dir"' EXIT
+          printf '%s\n' "$HOSTINGER_SSH_KEY" > "$ssh_dir/key"
+          printf '%s\n' "$HOSTINGER_KNOWN_HOSTS" > "$ssh_dir/known_hosts"
+          ssh_opts=(-i "$ssh_dir/key" -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$ssh_dir/known_hosts")
+          target="$HOSTINGER_USERNAME@$HOSTINGER_HOST"
+          [[ "$GITHUB_SHA" =~ ^[a-f0-9]{40}$ && "$GITHUB_RUN_ID" =~ ^[0-9]+$ && "$GITHUB_RUN_ATTEMPT" =~ ^[0-9]+$ ]]
+          release="applications/instantayurved/incoming/$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          ssh "${ssh_opts[@]}" -p "$HOSTINGER_PORT" "$target" "umask 077; mkdir -p '$release'"
+          scp "${ssh_opts[@]}" -P "$HOSTINGER_PORT" "$RUNNER_TEMP/instantayurved.tar.gz" "$RUNNER_TEMP/instantayurved.tar.gz.sha256" "$target:$release/"
+          ssh "${ssh_opts[@]}" -p "$HOSTINGER_PORT" "$target" "cd '$release' && sha256sum --check instantayurved.tar.gz.sha256"
