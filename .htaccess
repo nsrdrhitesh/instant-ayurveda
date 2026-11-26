@@ -1,0 +1,13 @@
+Options -Indexes
+DirectoryIndex index.php
+RewriteEngine On
+
+RewriteRule (^|/)[.] - [F,END]
+RewriteRule ^(?:app|bootstrap|config|database|deploy|docs|documentation|resources|routes|tests|tools)(?:/|$) - [F,END,NC]
+RewriteRule ^(?:artisan|composer[.](?:json|lock)|phpunit[.]xml)$ - [F,END,NC]
+RewriteRule ^public(?:/|$) - [F,END,NC]
+
+RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
+RewriteRule ^([A-Za-z0-9_./%-]+[.](?:css|js|mjs|map|png|jpe?g|gif|webp|svg|ico|avif|woff2?|ttf|otf|mp4|webm|pdf|txt|xml|json))$ public/$1 [END,NC]
+RewriteRule ^ index.php [END]
