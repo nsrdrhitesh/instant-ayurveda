@@ -1,0 +1,65 @@
+.spatial-hero{background:radial-gradient(ellipse at 86% 0%,#4e684d 0%,transparent 52%),linear-gradient(145deg,#102e25,#234535);color:#fff9eb;padding:clamp(2rem,6vw,5.4rem) 0}
+.spatial-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(1.5rem,6vw,6rem);align-items:center}
+.spatial-copy h1{font-size:clamp(2.6rem,6.3vw,6rem);line-height:.98;letter-spacing:-.045em;color:inherit;margin:.35em 0}
+.spatial-copy>p:not(.spatial-label){max-width:34rem;color:#e1eadb;font-size:clamp(1rem,1.7vw,1.25rem)}
+.spatial-label{letter-spacing:.12em;text-transform:uppercase;font-size:.76rem;color:#d9e4ba}
+.spatial-link,.spatial-portrait a{color:inherit;text-underline-offset:.3em}
+.spatial-hero .btn{background:#f0dc9f;color:#172d22}
+.spatial-portrait{position:relative;margin:0;isolation:isolate}
+.spatial-portrait img{display:block;width:100%;aspect-ratio:1.12;object-fit:cover;object-position:center top;border-radius:2rem;box-shadow:0 28px 72px #091b16a6}
+.spatial-portrait figcaption{position:absolute;inset:auto 1rem 1rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;background:#17372deb;color:#fff9eb;border:1px solid #ffffff40;border-radius:1.1rem;padding:1rem;backdrop-filter:blur(12px)}
+.spatial-answer,.spatial-cta{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-block:1.5rem;padding:1.4rem clamp(1rem,4vw,2.2rem);background:#edf0de;border-radius:1.3rem;color:#18372b}
+.spatial-answer a{white-space:nowrap;color:inherit}
+.spatial-answer p,.spatial-cta p{margin:0}
+.spatial-cta h2{margin:0 0 .5rem}
+.spatial-facility{background:#e9ecdd;padding:clamp(2rem,5vw,4rem) 0}
+.spatial-facility img{display:block;width:100%;aspect-ratio:1.4;object-fit:cover;border-radius:1.4rem;box-shadow:0 18px 45px #18372b2b}
+@media(max-width:720px){.spatial-grid{grid-template-columns:1fr}.spatial-answer,.spatial-cta{align-items:flex-start;flex-direction:column}}
+
+.spatial-contact{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:.4rem 1.25rem}.spatial-contact a{color:inherit;text-underline-offset:.2em}
+
+.centre-public{--green:#0a5c5c;--ink:#163737;--cream:#fff;--light:#e0f2f2;--line:#dbe7e5;--serif:"Playfair Display",Georgia,serif;--sans:Poppins,system-ui,sans-serif}
+.site-header{background:#fff}
+.spatial-contact{background:#074242;color:#fff}
+.spatial-hero{background:linear-gradient(95deg,#052e30eb,#074242ba),url("../images/instant-ayurved/img/hospital.jpg") center/cover}
+.centre-public .spatial-copy h1{color:#fff;font-size:clamp(2.6rem,4.6vw,4.6rem);font-weight:700}
+.spatial-hero .btn{background:#0a5c5c;color:#fff!important}
+.reference-callback{background:#fff;border-radius:.85rem;padding:clamp(1rem,3vw,2rem);color:#163737;box-shadow:0 12px 32px #002c3250}
+.centre-public .reference-callback h2{text-align:center;font-size:clamp(1.55rem,3vw,2rem);font-weight:700;margin:0 0 1rem}
+.reference-callback .inquiry-form label{margin-bottom:.75rem}
+.reference-callback .btn{width:100%}
+.reference-emergency{margin:.75rem 0 0;text-align:center;font-size:.82rem;color:#633327}
+.reference-trust{background:#0a5c5c;color:white;padding:1.4rem 0;text-align:center}
+.reference-trust .container{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.reference-trust strong,.reference-trust span{display:block}
+.reference-trust strong{font-size:1.7rem;color:#f1cf66}
+.reference-doctor img{width:100%;aspect-ratio:1.12;object-fit:cover;object-position:center top;border-radius:.8rem}
+.reference-values{background:#f5f5f0;text-align:center}
+.reference-values .quote-card{border-radius:.75rem}
+#care .section-heading{display:block;text-align:center}
+@media(max-width:720px){.reference-trust .container{grid-template-columns:repeat(2,1fr)}}
+.reference-service-cards .service-card{overflow:hidden;padding:0 0 1.25rem;background:white;border:1px solid #dbe7e5;border-radius:.7rem;box-shadow:0 8px 22px #143b3b14}
+.reference-service-cards .service-card img{display:block;width:100%;aspect-ratio:1.75;object-fit:cover}
+.reference-service-cards .service-card h3,.reference-service-cards .service-card p,.reference-service-cards .service-card>.text-link{margin-inline:1.25rem}
+.reference-newsletter{margin-top:1.4rem}
+.reference-newsletter .consent{margin:.7rem 0}
+.reference-nav-menu{position:relative}
+.reference-nav-menu summary{cursor:pointer;white-space:nowrap}
+.reference-nav-menu>div{position:absolute;top:calc(100% + .65rem);left:0;z-index:1;min-width:12rem;background:#fff;padding:.5rem;border:1px solid #dbe7e5;border-radius:.5rem;box-shadow:0 10px 22px #143b3b22}
+.reference-nav-menu a{display:block;padding:.5rem;white-space:nowrap}
+.site-footer .footer-grid{grid-template-columns:1.4fr 1fr 1fr 1.2fr}
+@media(max-width:800px){.reference-nav-menu{padding:12px}.reference-nav-menu>div{position:static;margin-top:.5rem;box-shadow:none}.site-footer .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.contact-shortcuts .whatsapp-shortcut{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;background:#147b48;color:#fff}
+.reference-footer-credit{display:flex;flex-direction:column;align-items:center;gap:.25rem;text-align:center}
+.reference-footer-credit p{margin:.4rem 0}
+.reference-footer-credit a{font-weight:650;text-decoration:underline;text-underline-offset:.2em}
+
+.reference-trust-icon{display:block;margin:0 auto .4rem;color:#f1cf66}
+
+#care .reference-service-cards{grid-auto-rows:1fr}
+#care .service-card{display:flex;flex-direction:column;align-items:stretch;min-width:0}
+#care .service-card-image{display:block;width:100%;aspect-ratio:16/9;overflow:hidden}
+#care .service-card-image img{display:block;width:100%;height:100%;margin:0;border-radius:0;aspect-ratio:auto;object-fit:cover;object-position:center}
+#care .service-card h3{max-width:none;margin-block:1rem .5rem;overflow-wrap:anywhere}
+#care .service-card>.text-link{align-self:stretch;width:auto;margin-top:auto;padding-top:.75rem}
+@media(max-width:600px){#care .reference-service-cards{grid-template-columns:minmax(0,1fr);grid-auto-rows:auto}}
